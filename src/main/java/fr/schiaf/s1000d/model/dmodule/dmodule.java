@@ -1,14 +1,17 @@
 package fr.schiaf.s1000d.model.dmodule;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class dmodule extends Element {
 
-    public dmodule() {
+    dmodule() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setName("dmodule");
         this.setType(ElementType.TAG);
+        this.setAttributes(new LinkedList<Element>());
+        this.setChildren(new LinkedList<Element>());
     }
 
     @Override
@@ -41,6 +44,7 @@ public class dmodule extends Element {
                 sb.append(attribute.getChildren().getFirst().toS1000DXml());
             }
         }
+        sb.append(">");
         for (Element child : this.getChildren()) {
             sb.append(child.toS1000DXml());
         }
