@@ -4,17 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
 import fr.schiaf.s1000d.model.dmodule.Element;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
 
-public class identAndStatusSection extends Element {
+@Component
+public class IdentAndStatusSection extends Element {
     private static final String HTML_STATUS_HEADER = "<h1>STATUS</h1>";
     private static final String HTML_DIV_OPEN = "<div>";
     private static final String HTML_DIV_CLOSE = "</div>";
     private static final String XML_TAG_START = "<identAndStatusSection";
     private static final String XML_TAG_END = "</identAndStatusSection>";
 
-    identAndStatusSection() {
+    IdentAndStatusSection() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setName("identAndStatusSection");

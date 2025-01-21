@@ -9,9 +9,9 @@ import fr.schiaf.s1000d.model.dmodule.Element;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
 
 @Component
-public class dmodule extends Element {
+public class Dmodule extends Element {
 
-    dmodule() {
+    Dmodule() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setName("dmodule");

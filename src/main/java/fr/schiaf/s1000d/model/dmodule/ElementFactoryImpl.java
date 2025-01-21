@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.tag.dmodule;
+import fr.schiaf.s1000d.model.dmodule.tag.Dmodule;
+import fr.schiaf.s1000d.model.dmodule.tag.IdentAndStatusSection;
 
 @Component
 public class ElementFactoryImpl implements ElementFactory {
@@ -16,8 +17,9 @@ public class ElementFactoryImpl implements ElementFactory {
     public Element createElement(String type) {
         switch (type) {
             case "dmodule":
-            return applicationContext.getBean(dmodule.class);
-            // Ajoutez d'autres cas pour d'autres sous-classes d'Element si nécessaire
+                return applicationContext.getBean(Dmodule.class);
+            case "identAndStatusSection":
+                return applicationContext.getBean(IdentAndStatusSection.class);
             default:
                 throw new IllegalArgumentException("Type d'élément inconnu: " + type);
         }
