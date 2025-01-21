@@ -23,6 +23,8 @@ public class S1000dApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Element dmodule = elementFactory.createElement("dmodule");
 		Element identAndStatusSection = elementFactory.createElement("identAndStatusSection");
+		Element dmAddress = elementFactory.createElement("dmAddress");
+		identAndStatusSection.getChildren().add(dmAddress);
 		dmodule.getChildren().add(identAndStatusSection);
 		System.out.println(dmodule.toS1000DXml());
 	}
