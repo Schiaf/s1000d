@@ -1,8 +1,14 @@
-package fr.schiaf.s1000d.model.dmodule;
+package fr.schiaf.s1000d.model.dmodule.tag;
 
 import java.util.LinkedList;
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
+import fr.schiaf.s1000d.model.dmodule.Element;
+import fr.schiaf.s1000d.model.dmodule.ElementType;
+
+@Component
 public class dmodule extends Element {
 
     dmodule() {
