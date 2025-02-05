@@ -9,12 +9,12 @@ import fr.schiaf.s1000d.model.dmodule.ElementType;
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
-public class DmAddress extends ElementXML {
+public class DmIdent extends ElementXML {
 
-    DmAddress() {
+    DmIdent() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
-        this.setName("dmAddress");
+        this.setName("dmIdent");
         this.setType(ElementType.TAG);
         this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());

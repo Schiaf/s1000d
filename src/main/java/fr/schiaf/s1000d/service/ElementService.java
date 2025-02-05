@@ -19,5 +19,6 @@ public class ElementService {
         identAndStatusSection.getChildren().add(dmAddress);
         dmodule.getChildren().add(identAndStatusSection);
         System.out.println(dmodule.toS1000DXml());
+        System.out.println(dmodule.toHtml());
     }
 }

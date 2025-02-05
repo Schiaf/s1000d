@@ -1,10 +1,8 @@
 package fr.schiaf.s1000d.model.dmodule.tag;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.DocumentType;
 import org.jsoup.nodes.Element;
@@ -37,13 +35,7 @@ public class Dmodule extends ElementXML {
         //get the body element
         Element body = doc.body();
         //add the children
-        for (ElementXML child : this.getChildren()) {
-            String childHtml = child.toHtml();
-            Document childDoc = Jsoup.parse(childHtml);
-            for (Element element : childDoc.body().children()) {
-                body.appendChild(element);
-            }
-        }
+        this.appendChildrenToElement(body);
         return doc.toString();
     }
 
@@ -56,21 +48,7 @@ public class Dmodule extends ElementXML {
         xmlDeclaration.attr("encoding", "UTF-8");
         doc.prependChild(xmlDeclaration);
         doc.prependChild(new DocumentType(this.getName(), "", ""));
-
-        Element root = doc.appendElement(this.getName());
-        List<ElementXML> attributes = getAttributes();
-        if (attributes != null) {
-            for (ElementXML attribute : attributes) {
-                if (attribute != null && attribute.getChildren() != null && !attribute.getChildren().isEmpty()) {
-                    root.attr(attribute.getName(), attribute.getChildren().get(0).toS1000DXml());
-                }
-            }
-        }
-
-        for (ElementXML child : this.getChildren()) {
-            root.append(child.toS1000DXml());
-        }
-
+        doc.append(super.toS1000DXml());
         return doc.toString();
     }
 
