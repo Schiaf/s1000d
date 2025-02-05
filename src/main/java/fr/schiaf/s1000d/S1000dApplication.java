@@ -5,15 +5,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import fr.schiaf.s1000d.model.dmodule.ElementXML;
-import fr.schiaf.s1000d.model.dmodule.ElementFactory;
+import fr.schiaf.s1000d.service.ElementService;
 
 
 @SpringBootApplication
 public class S1000dApplication implements CommandLineRunner {
 
 	@Autowired
-    private ElementFactory elementFactory;
+    private ElementService elementService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(S1000dApplication.class, args);
@@ -21,13 +20,7 @@ public class S1000dApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		ElementXML dmodule = elementFactory.createElement("dmodule");
-		ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection");
-		ElementXML dmAddress = elementFactory.createElement("dmAddress");
-		identAndStatusSection.getChildren().add(dmAddress);
-		dmodule.getChildren().add(identAndStatusSection);
-		System.out.println(dmodule.toS1000DXml());
-		System.out.println(dmodule.toHtml());
+		elementService.processElements();
 	}
 
 }
