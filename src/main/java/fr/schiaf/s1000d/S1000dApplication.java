@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import fr.schiaf.s1000d.model.dmodule.Element;
+import fr.schiaf.s1000d.model.dmodule.ElementXML;
 import fr.schiaf.s1000d.model.dmodule.ElementFactory;
 
 
@@ -21,12 +21,13 @@ public class S1000dApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Element dmodule = elementFactory.createElement("dmodule");
-		Element identAndStatusSection = elementFactory.createElement("identAndStatusSection");
-		Element dmAddress = elementFactory.createElement("dmAddress");
+		ElementXML dmodule = elementFactory.createElement("dmodule");
+		ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection");
+		ElementXML dmAddress = elementFactory.createElement("dmAddress");
 		identAndStatusSection.getChildren().add(dmAddress);
 		dmodule.getChildren().add(identAndStatusSection);
 		System.out.println(dmodule.toS1000DXml());
+		System.out.println(dmodule.toHtml());
 	}
 
 }
