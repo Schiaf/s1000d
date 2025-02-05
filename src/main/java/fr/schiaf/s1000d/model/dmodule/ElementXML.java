@@ -7,12 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class Element {
+public abstract class ElementXML {
     String private_id;
     String name;
     ElementType type;
-    List<Element> attributes;
-    List<Element> children;
+    List<ElementXML> attributes;
+    List<ElementXML> children;
 
     public abstract String toHtml();
     public abstract String toS1000DXml();

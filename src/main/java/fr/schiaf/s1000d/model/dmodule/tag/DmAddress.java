@@ -4,24 +4,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.Element;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
+import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
-public class DmAddress extends Element {
-
-    private static final String XML_TAG_START = "<dmAddress";
-    private static final String XML_TAG_END = "</dmAddress>";
+public class DmAddress extends ElementXML {
 
     DmAddress() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setName("dmAddress");
         this.setType(ElementType.TAG);
-        this.setAttributes(new LinkedList<Element>());
-        this.setChildren(new LinkedList<Element>());
+        this.setAttributes(new LinkedList<ElementXML>());
+        this.setChildren(new LinkedList<ElementXML>());
     }
 
     @Override
@@ -31,32 +30,21 @@ public class DmAddress extends Element {
 
     @Override
     public String toS1000DXml() {
-        StringBuilder sb = new StringBuilder(200); // Pre-allocate buffer
-        sb.append(XML_TAG_START);
-        
-        List<Element> attributes = getAttributes();
+        Document doc = new Document("");
+        doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        Element root = doc.appendElement(this.getName());
+        List<ElementXML> attributes = getAttributes();
         if (attributes != null) {
-            for (Element attribute : attributes) {
+            for (ElementXML attribute : attributes) {
                 if (attribute != null && attribute.getChildren() != null && !attribute.getChildren().isEmpty()) {
-                    sb.append(" ");
-                    sb.append(attribute.getChildren().get(0).toS1000DXml());
+                    root.attr(attribute.getName(), attribute.getChildren().get(0).toS1000DXml());
                 }
             }
         }
-        
-        sb.append(">");
-        
-        List<Element> children = getChildren();
-        if (children != null) {
-            for (Element child : children) {
-                if (child != null) {
-                    sb.append(child.toS1000DXml());
-                }
-            }
+        for (ElementXML child : this.getChildren()) {
+            root.append(child.toS1000DXml());
         }
-        
-        sb.append(XML_TAG_END);
-        return sb.toString();
+        return doc.toString();
     }
 
 }

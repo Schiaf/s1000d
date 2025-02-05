@@ -15,7 +15,7 @@ public class ElementFactoryImpl implements ElementFactory {
     private ApplicationContext applicationContext;
 
     @Override
-    public Element createElement(String type) {
+    public ElementXML createElement(String type) {
         switch (type) {
             case "dmodule":
                 return applicationContext.getBean(Dmodule.class);
