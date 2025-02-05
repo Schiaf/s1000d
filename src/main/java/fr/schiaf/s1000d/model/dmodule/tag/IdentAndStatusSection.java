@@ -6,9 +6,7 @@ import java.util.UUID;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.DocumentType;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.XmlDeclaration;
 
 import org.springframework.stereotype.Component;
 
@@ -42,7 +40,11 @@ public class IdentAndStatusSection extends ElementXML {
         Element div = body.appendElement(HTML_DIV);
 
         for (ElementXML child : this.getChildren()) {
-            div.append(child.toHtml());
+            String childHtml = child.toHtml();
+            Document childDoc = Jsoup.parse(childHtml);
+            for (Element element : childDoc.body().children()) {
+                div.appendChild(element);
+            }
         }
 
         return doc.toString();
