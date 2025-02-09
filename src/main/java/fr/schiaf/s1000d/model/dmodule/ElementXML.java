@@ -18,8 +18,8 @@ public abstract class ElementXML {
     List<ElementXML> attributes;
     List<ElementXML> children;
 
-    public abstract String toHtml();
-    
+    private static final String HTML_DIV = "div";
+
     public String toS1000DXml() {
         Document doc = new Document("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
@@ -38,6 +38,15 @@ public abstract class ElementXML {
         return doc.toString();
     }
 
+    public String toHtml() {
+        Document doc = Document.createShell("");
+        doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        Element body = doc.body();
+        Element div = body.appendElement(HTML_DIV);
+        this.appendChildrenToElement(div);
+        return doc.toString();
+    }
+
     protected void appendChildrenToElement(Element tag) {
         for (ElementXML child : this.getChildren()) {
             String childHtml = child.toHtml();
@@ -46,6 +55,15 @@ public abstract class ElementXML {
                 tag.appendChild(element);
             }
         }
+    }
+
+    public String getAttribute(String name) {
+        for (ElementXML attribute : getAttributes()) {
+            if (attribute.getName().equals(name)) {
+                return attribute.getChildren().get(0).toHtml();
+            }
+        }
+        return null;
     }
 
 }

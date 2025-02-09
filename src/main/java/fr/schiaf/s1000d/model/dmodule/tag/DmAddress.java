@@ -20,9 +20,4 @@ public class DmAddress extends ElementXML {
         this.setChildren(new LinkedList<ElementXML>());
     }
 
-    @Override
-    public String toHtml() {
-       return "";
-    }
-
 }

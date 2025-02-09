@@ -16,6 +16,15 @@ public class ElementService {
         ElementXML dmodule = elementFactory.createElement("dmodule");
         ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection");
         ElementXML dmAddress = elementFactory.createElement("dmAddress");
+        ElementXML dmIdent = elementFactory.createElement("dmIdent");
+        ElementXML dmCode = elementFactory.createElement("dmCode");
+        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode");
+        ElementXML modelIdentCodeText = elementFactory.createElement("text");
+        modelIdentCodeText.setName("BRAKE");
+        modelIdentCode.getChildren().add(modelIdentCodeText);
+        dmCode.getAttributes().add(modelIdentCode);
+        dmIdent.getChildren().add(dmCode);
+        dmAddress.getChildren().add(dmIdent);
         identAndStatusSection.getChildren().add(dmAddress);
         dmodule.getChildren().add(identAndStatusSection);
         System.out.println(dmodule.toS1000DXml());

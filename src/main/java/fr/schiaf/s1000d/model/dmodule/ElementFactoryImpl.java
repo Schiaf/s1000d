@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.tag.DmAddress;
-import fr.schiaf.s1000d.model.dmodule.tag.Dmodule;
-import fr.schiaf.s1000d.model.dmodule.tag.IdentAndStatusSection;
+import fr.schiaf.s1000d.model.dmodule.tag.*;
+import fr.schiaf.s1000d.model.dmodule.attribute.*;
+import fr.schiaf.s1000d.model.dmodule.generic.*;
 
 @Component
 public class ElementFactoryImpl implements ElementFactory {
@@ -23,6 +23,14 @@ public class ElementFactoryImpl implements ElementFactory {
                 return applicationContext.getBean(IdentAndStatusSection.class);
             case "dmAddress":
                 return applicationContext.getBean(DmAddress.class);
+            case "dmIdent":
+                return applicationContext.getBean(DmIdent.class);
+            case "dmCode":
+                return applicationContext.getBean(DmCode.class);
+            case "modelIdentCode":
+                return applicationContext.getBean(ModelIdentCode.class);
+            case "text":
+                return applicationContext.getBean(Text.class);
             default:
                 throw new IllegalArgumentException("Type d'élément inconnu: " + type);
         }
