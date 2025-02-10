@@ -16,23 +16,28 @@ public class ElementFactoryImpl implements ElementFactory {
 
     @Override
     public ElementXML createElement(String type) {
-        switch (type) {
-            case "dmodule":
-                return applicationContext.getBean(Dmodule.class);
-            case "identAndStatusSection":
-                return applicationContext.getBean(IdentAndStatusSection.class);
-            case "dmAddress":
-                return applicationContext.getBean(DmAddress.class);
-            case "dmIdent":
-                return applicationContext.getBean(DmIdent.class);
-            case "dmCode":
-                return applicationContext.getBean(DmCode.class);
-            case "modelIdentCode":
-                return applicationContext.getBean(ModelIdentCode.class);
-            case "text":
-                return applicationContext.getBean(Text.class);
-            default:
-                throw new IllegalArgumentException("Type d'élément inconnu: " + type);
+        ElementXML elt = null;
+        Class<?> clazz = null;
+        String[] basePackages = { "fr.schiaf.s1000d.model.dmodule.tag", "fr.schiaf.s1000d.model.dmodule.attribute",
+                "fr.schiaf.s1000d.model.dmodule.generic" };
+
+        for (String basePackage : basePackages) {
+            try {
+                String className = basePackage + "." + type.substring(0, 1).toUpperCase() + type.substring(1);
+                clazz = Class.forName(className);
+                break; // Exit loop if class is found
+            } catch (ClassNotFoundException e) {
+                // Continue to the next package
+            }
         }
+
+        if (clazz != null) {
+            elt = (ElementXML) applicationContext.getBean(clazz);
+        } else {
+            elt = applicationContext.getBean(NotImplemented.class);
+        }
+
+        elt.setName(type);
+        return elt;
     }
 }

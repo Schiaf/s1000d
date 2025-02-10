@@ -5,6 +5,8 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.springframework.context.annotation.Scope;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +20,7 @@ public abstract class ElementXML {
     List<ElementXML> attributes;
     List<ElementXML> children;
 
-    private static final String HTML_DIV = "div";
+    protected static final String HTML_DIV = "div";
 
     public String toS1000DXml() {
         Document doc = new Document("");
@@ -51,7 +53,7 @@ public abstract class ElementXML {
         for (ElementXML child : this.getChildren()) {
             String childHtml = child.toHtml();
             Document childDoc = Jsoup.parse(childHtml);
-            for (Element element : childDoc.body().children()) {
+            for (Node element : childDoc.body().childNodes()) {
                 tag.appendChild(element);
             }
         }

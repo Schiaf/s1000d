@@ -20,7 +20,8 @@ public class S1000dApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		elementService.processElements();
+		//elementService.processElements();
+		elementService.processElementsFromFile("src/main/resources/DMC-BRAKE-AAA-DA1-00-00-00AA-041A-A_004-00_EN-US.XML");
 	}
 
 }

@@ -5,13 +5,14 @@ import java.util.UUID;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
 
 @Component
+@Scope("prototype")
 public class IdentAndStatusSection extends ElementXML {
     private static final String HTML_H1= "h1";
     private static final String HTML_DIV = "div";

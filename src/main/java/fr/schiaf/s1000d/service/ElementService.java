@@ -1,5 +1,15 @@
 package fr.schiaf.s1000d.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +39,52 @@ public class ElementService {
         dmodule.getChildren().add(identAndStatusSection);
         System.out.println(dmodule.toS1000DXml());
         System.out.println(dmodule.toHtml());
+    }
+
+    //readFile
+    public void processElementsFromFile(String filePath) {
+        try {
+            File input = new File(filePath);
+            Document doc = Jsoup.parse(input, "UTF-8", "",  Parser.xmlParser());
+            ElementXML root = null;
+            root = addChildrens(root, doc.childNodes());
+            System.out.println(root.toHtml());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ElementXML addChildrens(ElementXML element, List<Node> children) {
+        for (Node child : children) {
+            //switch case for different types of nodes
+            if (child instanceof Element) {
+                ElementXML newElement = elementFactory.createElement(((Element) child).tagName());
+                for (org.jsoup.nodes.Attribute attribute : ((Element) child).attributes()) {
+                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey());
+                    ElementXML newAttributeValue = elementFactory.createElement("text");
+                    newAttributeValue.setName(attribute.getValue());
+                    newAttribute.getChildren().add(newAttributeValue);
+                    newElement.getAttributes().add(newAttribute);
+                }
+                addChildrens(newElement, ((Element) child).childNodes());
+
+                if (element == null) {
+                    element = newElement;
+                }else{
+                    element.getChildren().add(newElement);
+                }
+            }else if (child instanceof org.jsoup.nodes.TextNode) {
+                /*
+                ElementXML newElement = elementFactory.createElement("text");
+                newElement.setName(((org.jsoup.nodes.TextNode) child).text());
+                if (element == null) {
+                    element = newElement;
+                }else{
+                    element.getChildren().add(newElement);
+                } */
+            }
+
+        }
+        return element;
     }
 }
