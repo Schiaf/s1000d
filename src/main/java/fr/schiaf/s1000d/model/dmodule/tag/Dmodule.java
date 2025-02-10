@@ -7,13 +7,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.DocumentType;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.XmlDeclaration;
-
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
 
 @Component
+@Scope("prototype")
 public class Dmodule extends ElementXML {
 
     Dmodule() {
