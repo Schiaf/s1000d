@@ -20,7 +20,7 @@ public class NotImplemented extends ElementXML {
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setName("");
         this.setType(ElementType.TEXT);
-        this.setAttributes(null);
+        this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());
     }
 
