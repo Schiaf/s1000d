@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +48,9 @@ public class ElementService {
             Document doc = Jsoup.parse(input, "UTF-8", "",  Parser.xmlParser());
             ElementXML root = null;
             root = addChildrens(root, doc.childNodes());
-            System.out.println(root.toHtml());
+            //write root.toHtml() to file "output.html"
+            File output = new File("output.html");
+            FileUtils.writeStringToFile(output, root.toHtml(), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,16 +76,20 @@ public class ElementService {
                     element.getChildren().add(newElement);
                 }
             }else if (child instanceof org.jsoup.nodes.TextNode) {
-                /*
                 ElementXML newElement = elementFactory.createElement("text");
-                newElement.setName(((org.jsoup.nodes.TextNode) child).text());
-                if (element == null) {
-                    element = newElement;
-                }else{
-                    element.getChildren().add(newElement);
-                } */
+                //if text node is not empty
+                if (!((org.jsoup.nodes.TextNode) child).text().trim().isEmpty()){
+                    //get parent type node
+                    if (!child.parent().nodeName().equalsIgnoreCase("#document")){
+                        newElement.setName(((org.jsoup.nodes.TextNode) child).text());
+                        if (element == null) {
+                            element = newElement;
+                        }else{
+                            element.getChildren().add(newElement);
+                        }
+                    }
+                }
             }
-
         }
         return element;
     }

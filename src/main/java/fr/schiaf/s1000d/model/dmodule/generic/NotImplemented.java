@@ -31,6 +31,7 @@ public class NotImplemented extends ElementXML {
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
         Element div2 = body.appendElement(HTML_DIV).text("Not implemented: " + this.getName());
+        this.appendChildrenToElement(div2);
         //add div2 to div
         div.appendChild(div2);
         this.appendChildrenToElement(div);
