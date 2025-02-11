@@ -1,6 +1,8 @@
-package fr.schiaf.s1000d.model.dmodule.generic;
+package fr.schiaf.s1000d.model.dmodule.tag;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import org.jsoup.nodes.Document;
@@ -8,18 +10,17 @@ import org.jsoup.nodes.Element;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.ElementType;
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class NotImplemented extends ElementXML {
+public class InfoName extends ElementXML {
 
-    NotImplemented() {
+    private static final String S1000D_TECHNAME = "Infoname: ";
+
+    InfoName() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
-        this.setName("");
-        this.setType(ElementType.TEXT);
         this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());
     }
@@ -30,10 +31,14 @@ public class NotImplemented extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
-        Element div2 = body.appendElement(HTML_DIV).text("Not implemented: " + this.getName());
-        this.appendChildrenToElement(div2);
-        //add div2 to div
-        div.appendChild(div2);
+        div.appendElement(HTML_SPAN).text(S1000D_TECHNAME).addClass("bold");;
+        Element span = div.appendElement(HTML_SPAN);
+        this.appendChildrenToElement(span);
+        List<String> usedAttributes = Arrays.asList("");
+        Element span2 = this.addMissingAttribute(usedAttributes);
+        if (span2.childrenSize() != 0) {
+            div.appendChild(span2);
+        }
         return doc.toString();
     }
 

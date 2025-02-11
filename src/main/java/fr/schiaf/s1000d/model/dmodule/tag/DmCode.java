@@ -1,6 +1,8 @@
 package fr.schiaf.s1000d.model.dmodule.tag;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import org.jsoup.nodes.Document;
@@ -8,23 +10,17 @@ import org.jsoup.nodes.Element;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.ElementType;
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
 public class DmCode extends ElementXML {
 
-    private static final String HTML_H2 = "h2";
-    private static final String HTML_SPAN = "span";
     private static final String S1000D_DMC = "DMC: ";
-    private static final String DASH = "-";
     
     DmCode() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
-        this.setName("dmCode");
-        this.setType(ElementType.TAG);
         this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());
     }
@@ -34,7 +30,9 @@ public class DmCode extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        body.appendElement(HTML_H2).text(S1000D_DMC);
+        Element div = body.appendElement(HTML_DIV);
+        Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_DMC);
+        span.addClass("bold");
         StringBuilder dmc = new StringBuilder();
         dmc.append(this.getAttribute("modelIdentCode"));
         dmc.append(DASH);
@@ -54,8 +52,13 @@ public class DmCode extends ElementXML {
         dmc.append(this.getAttribute("infoCodeVariant"));
         dmc.append(DASH);
         dmc.append(this.getAttribute("itemLocationCode"));
-        Element span = body.appendElement(HTML_SPAN).text(dmc.toString());
-        this.appendChildrenToElement(span);
+        div.appendElement(HTML_SPAN).text(dmc.toString());
+        this.appendChildrenToElement(div);
+        List<String> usedAttributes = Arrays.asList("modelIdentCode", "systemDiffCode", "systemCode", "subSystemCode", "subSubSystemCode", "assyCode", "disassyCode", "disassyCodeVariant", "infoCode", "infoCodeVariant", "itemLocationCode"); 
+        Element span2 = this.addMissingAttribute(usedAttributes);
+        if (span2.childrenSize() != 0) {
+            div.appendChild(span2);
+        }
         return doc.toString();
     }
 

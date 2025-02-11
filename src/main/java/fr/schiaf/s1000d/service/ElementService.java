@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 import fr.schiaf.s1000d.model.dmodule.ElementFactory;
+import fr.schiaf.s1000d.model.dmodule.ElementType;
 
 @Service
 public class ElementService {
@@ -23,13 +24,13 @@ public class ElementService {
     private ElementFactory elementFactory;
 
     public void processElements() {
-        ElementXML dmodule = elementFactory.createElement("dmodule");
-        ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection");
-        ElementXML dmAddress = elementFactory.createElement("dmAddress");
-        ElementXML dmIdent = elementFactory.createElement("dmIdent");
-        ElementXML dmCode = elementFactory.createElement("dmCode");
-        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode");
-        ElementXML modelIdentCodeText = elementFactory.createElement("text");
+        ElementXML dmodule = elementFactory.createElement("dmodule", ElementType.TAG);
+        ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection", ElementType.TAG);
+        ElementXML dmAddress = elementFactory.createElement("dmAddress", ElementType.TAG);
+        ElementXML dmIdent = elementFactory.createElement("dmIdent", ElementType.TAG);
+        ElementXML dmCode = elementFactory.createElement("dmCode", ElementType.TAG);
+        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode", ElementType.ATTRIBUTE);
+        ElementXML modelIdentCodeText = elementFactory.createElement("text", ElementType.TEXT);
         modelIdentCodeText.setName("BRAKE");
         modelIdentCode.getChildren().add(modelIdentCodeText);
         dmCode.getAttributes().add(modelIdentCode);
@@ -51,6 +52,9 @@ public class ElementService {
             //write root.toHtml() to file "output.html"
             File output = new File("output.html");
             FileUtils.writeStringToFile(output, root.toHtml(), "UTF-8");
+            //copy css file to the same directory
+            File css = new File("dmodule.css");
+            FileUtils.copyFile(new File("src/main/resources/fr/schiaf/s1000d/css/dmodule.css"), css);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,10 +64,10 @@ public class ElementService {
         for (Node child : children) {
             //switch case for different types of nodes
             if (child instanceof Element) {
-                ElementXML newElement = elementFactory.createElement(((Element) child).tagName());
+                ElementXML newElement = elementFactory.createElement(((Element) child).tagName(),ElementType.TAG);
                 for (org.jsoup.nodes.Attribute attribute : ((Element) child).attributes()) {
-                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey());
-                    ElementXML newAttributeValue = elementFactory.createElement("text");
+                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey(), ElementType.ATTRIBUTE);
+                    ElementXML newAttributeValue = elementFactory.createElement("text", ElementType.TEXT);
                     newAttributeValue.setName(attribute.getValue());
                     newAttribute.getChildren().add(newAttributeValue);
                     newElement.getAttributes().add(newAttribute);
@@ -76,7 +80,7 @@ public class ElementService {
                     element.getChildren().add(newElement);
                 }
             }else if (child instanceof org.jsoup.nodes.TextNode) {
-                ElementXML newElement = elementFactory.createElement("text");
+                ElementXML newElement = elementFactory.createElement("text", ElementType.TEXT);
                 //if text node is not empty
                 if (!((org.jsoup.nodes.TextNode) child).text().trim().isEmpty()){
                     //get parent type node

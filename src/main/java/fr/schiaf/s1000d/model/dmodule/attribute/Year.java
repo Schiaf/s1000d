@@ -10,9 +10,9 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class SubSubSystemCode extends ElementXML {
+public class Year extends ElementXML {
 
-    SubSubSystemCode() {
+    Year() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(null);

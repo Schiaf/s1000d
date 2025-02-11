@@ -14,15 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class IdentAndStatusSection extends ElementXML {
-    private static final String HTML_H1= "h1";
-    private static final String HTML_DIV = "div";
+public class Language extends ElementXML {
 
-    private static final String S1000D_STATUS= "STATUS";
-
-
-
-    IdentAndStatusSection() {
+    private static final String S1000D_LANG = "Language: ";
+    
+    Language() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -34,13 +30,20 @@ public class IdentAndStatusSection extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        body.appendElement(HTML_H1).text(S1000D_STATUS);
         Element div = body.appendElement(HTML_DIV);
+        Element span = div.appendElement(HTML_SPAN).text(S1000D_LANG);
+        span.addClass("bold");
+        StringBuilder lang = new StringBuilder();
+        lang.append(this.getAttribute("languageIsoCode"));
+        lang.append(DASH);
+        lang.append(this.getAttribute("countryIsoCode"));
+        //add other attributes
+        div.appendElement(HTML_SPAN).text(lang.toString());
         this.appendChildrenToElement(div);
-        List<String> usedAttributes = Arrays.asList("");
+        List<String> usedAttributes = Arrays.asList("languageIsoCode", "countryIsoCode");
         Element span2 = this.addMissingAttribute(usedAttributes);
         if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
+            div.appendChild(span2);
         }
         return doc.toString();
     }

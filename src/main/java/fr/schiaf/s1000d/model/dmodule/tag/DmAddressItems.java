@@ -1,4 +1,4 @@
-package fr.schiaf.s1000d.model.dmodule.attribute;
+package fr.schiaf.s1000d.model.dmodule.tag;
 
 import java.util.LinkedList;
 import java.util.UUID;
@@ -10,18 +10,13 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class SubSubSystemCode extends ElementXML {
+public class DmAddressItems extends ElementXML {
 
-    SubSubSystemCode() {
+    DmAddressItems() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
-        this.setAttributes(null);
+        this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());
-    }
-
-    @Override
-    public String toHtml() {
-       return this.getName();
     }
 
 }

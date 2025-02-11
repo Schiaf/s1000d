@@ -14,15 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class IdentAndStatusSection extends ElementXML {
-    private static final String HTML_H1= "h1";
-    private static final String HTML_DIV = "div";
+public class IssueDate extends ElementXML {
 
-    private static final String S1000D_STATUS= "STATUS";
-
-
-
-    IdentAndStatusSection() {
+    private static final String S1000D_ISSUE = "Issue Date: ";
+    
+    IssueDate() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -34,13 +30,21 @@ public class IdentAndStatusSection extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        body.appendElement(HTML_H1).text(S1000D_STATUS);
         Element div = body.appendElement(HTML_DIV);
+        Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_ISSUE);
+        span.addClass("bold");
+        StringBuilder issue = new StringBuilder();
+        issue.append(this.getAttribute("year"));
+        issue.append(DASH);
+        issue.append(this.getAttribute("month"));
+        issue.append(DASH);
+        issue.append(this.getAttribute("day"));
+        div.appendElement(HTML_SPAN).text(issue.toString());
         this.appendChildrenToElement(div);
-        List<String> usedAttributes = Arrays.asList("");
+        List<String> usedAttributes = Arrays.asList("year", "month", "day");
         Element span2 = this.addMissingAttribute(usedAttributes);
         if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
+            div.appendChild(span2);
         }
         return doc.toString();
     }
