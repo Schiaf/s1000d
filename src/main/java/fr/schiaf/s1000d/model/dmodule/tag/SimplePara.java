@@ -14,31 +14,24 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class DmStatus extends ElementXML {
+public class SimplePara extends ElementXML {
 
-    private static final String S1000D_ISSTYPE = "Issue Type: ";
-    
-    DmStatus() {
+    SimplePara() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
         this.setChildren(new LinkedList<ElementXML>());
     }
 
+    @Override
     public String toHtml() {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        Element div = body.appendElement(HTML_DIV);
-        List<String> usedAttributes = Arrays.asList("issueType");
-        Element span = div.appendElement(HTML_SPAN).text(S1000D_ISSTYPE);
-        span.addClass("bold");
-        StringBuilder lang = new StringBuilder();
-        lang.append(this.getAttribute("issueType"));
-        //add other attributes
-        div.appendElement(HTML_SPAN).text(lang.toString());
-        this.appendChildrenToElement(div, usedAttributes);
-
-    return doc.toString();
+        Element p = body.appendElement(HTML_P);
+        List<String> usedAttributes = Arrays.asList("");
+        this.appendChildrenToElement(p, usedAttributes);
+        return doc.toString();
     }
+
 }

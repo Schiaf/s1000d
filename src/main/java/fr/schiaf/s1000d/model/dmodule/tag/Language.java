@@ -31,6 +31,7 @@ public class Language extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
+        List<String> usedAttributes = Arrays.asList("languageIsoCode", "countryIsoCode");
         Element span = div.appendElement(HTML_SPAN).text(S1000D_LANG);
         span.addClass("bold");
         StringBuilder lang = new StringBuilder();
@@ -39,12 +40,7 @@ public class Language extends ElementXML {
         lang.append(this.getAttribute("countryIsoCode"));
         //add other attributes
         div.appendElement(HTML_SPAN).text(lang.toString());
-        this.appendChildrenToElement(div);
-        List<String> usedAttributes = Arrays.asList("languageIsoCode", "countryIsoCode");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
+        this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }
 

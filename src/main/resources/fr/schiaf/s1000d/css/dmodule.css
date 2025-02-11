@@ -5,3 +5,11 @@
 .inline {
     display: inline;
 }
+
+.block {
+    display: block;
+}
+
+.nottreated {
+    color: red;
+}

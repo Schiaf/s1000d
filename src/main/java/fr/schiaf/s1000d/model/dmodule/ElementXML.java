@@ -53,16 +53,15 @@ public abstract class ElementXML {
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
         List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
-        this.appendChildrenToElement(div);
-
+        this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }
 
-    protected void appendChildrenToElement(Element tag) {
+    protected void appendChildrenToElement(Element tag, List<String> usedAttributes) {
+        Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
+        if (span2.childNodeSize() != 0) {
+            tag.insertChildren(0, span2);
+        }
         for (ElementXML child : this.getChildren()) {
             String childHtml = child.toHtml();
             Document childDoc = Jsoup.parse(childHtml);
@@ -97,9 +96,12 @@ public abstract class ElementXML {
                 // if the attribute is not in the usedAttributes array, add it to the span
                 if (!usedAttributes.contains(attr.getName())){
                     StringBuilder attribs = new StringBuilder();
-                    attribs.append(this.getAttribute(attr.getName()));
+                    attribs.append("Not treated: ");
                     attribs.append(attr.toHtml());
-                    span2.text(attribs.toString());
+                    attribs.append(": ");
+                    attribs.append(this.getAttribute(attr.getName()));
+                    attribs.append("; ");
+                    span2.appendText(attribs.toString());
                 }
             }
         }

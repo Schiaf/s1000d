@@ -36,12 +36,8 @@ public class IdentAndStatusSection extends ElementXML {
         Element body = doc.body();
         body.appendElement(HTML_H1).text(S1000D_STATUS);
         Element div = body.appendElement(HTML_DIV);
-        this.appendChildrenToElement(div);
         List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
-        }
+        this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }
 

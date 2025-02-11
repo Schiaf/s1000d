@@ -33,12 +33,8 @@ public class TechName extends ElementXML {
         Element div = body.appendElement(HTML_DIV);
         div.appendElement(HTML_SPAN).text(S1000D_TECHNAME).addClass("bold");
         Element span = div.appendElement(HTML_SPAN);
-        this.appendChildrenToElement(span);
         List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
+        this.appendChildrenToElement(span, usedAttributes);
         return doc.toString();
     }
 

@@ -31,6 +31,7 @@ public class DmCode extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
+        List<String> usedAttributes = Arrays.asList("modelIdentCode", "systemDiffCode", "systemCode", "subSystemCode", "subSubSystemCode", "assyCode", "disassyCode", "disassyCodeVariant", "infoCode", "infoCodeVariant", "itemLocationCode"); 
         Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_DMC);
         span.addClass("bold");
         StringBuilder dmc = new StringBuilder();
@@ -53,12 +54,8 @@ public class DmCode extends ElementXML {
         dmc.append(DASH);
         dmc.append(this.getAttribute("itemLocationCode"));
         div.appendElement(HTML_SPAN).text(dmc.toString());
-        this.appendChildrenToElement(div);
-        List<String> usedAttributes = Arrays.asList("modelIdentCode", "systemDiffCode", "systemCode", "subSystemCode", "subSubSystemCode", "assyCode", "disassyCode", "disassyCodeVariant", "infoCode", "infoCodeVariant", "itemLocationCode"); 
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
+        this.appendChildrenToElement(div, usedAttributes);
+
         return doc.toString();
     }
 

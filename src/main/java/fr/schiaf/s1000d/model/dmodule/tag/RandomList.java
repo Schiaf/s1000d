@@ -29,12 +29,8 @@ public class RandomList extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element p = body.appendElement(HTML_UL);
-        this.appendChildrenToElement(p);
         List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
-        }
+        this.appendChildrenToElement(p, usedAttributes);
         return doc.toString();
     }
 

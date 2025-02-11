@@ -31,6 +31,8 @@ public class IssueDate extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
+        List<String> usedAttributes = Arrays.asList("year", "month", "day");
+
         Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_ISSUE);
         span.addClass("bold");
         StringBuilder issue = new StringBuilder();
@@ -40,12 +42,7 @@ public class IssueDate extends ElementXML {
         issue.append(DASH);
         issue.append(this.getAttribute("day"));
         div.appendElement(HTML_SPAN).text(issue.toString());
-        this.appendChildrenToElement(div);
-        List<String> usedAttributes = Arrays.asList("year", "month", "day");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
+        this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }
 

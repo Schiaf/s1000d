@@ -31,14 +31,10 @@ public class InfoName extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
+        List<String> usedAttributes = Arrays.asList("");
         div.appendElement(HTML_SPAN).text(S1000D_TECHNAME).addClass("bold");;
         Element span = div.appendElement(HTML_SPAN);
-        this.appendChildrenToElement(span);
-        List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            div.appendChild(span2);
-        }
+        this.appendChildrenToElement(span, usedAttributes);
         return doc.toString();
     }
 

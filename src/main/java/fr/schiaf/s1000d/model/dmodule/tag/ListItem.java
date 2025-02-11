@@ -28,16 +28,13 @@ public class ListItem extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
+        List<String> usedAttributes = Arrays.asList("");
+
         Element li = body.appendElement(HTML_LI);
-        this.appendChildrenToElement(li);
+        this.appendChildrenToElement(li, usedAttributes);
         li.getElementsByTag(HTML_P).forEach(p -> {
             p.addClass("inline");
         });
-        List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
-        }
         return doc.toString();
     }
 

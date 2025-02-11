@@ -42,13 +42,9 @@ public class Dmodule extends ElementXML {
         head.appendElement("link").attr("rel", "stylesheet").attr("href", "dmodule.css");
         //get the body element
         Element body = doc.body();
-        //add the children
-        this.appendChildrenToElement(body);
         List<String> usedAttributes = Arrays.asList("");
-        Element span2 = this.addMissingAttribute(usedAttributes);
-        if (span2.childrenSize() != 0) {
-            body.appendChild(span2);
-        }
+        //add the children
+        this.appendChildrenToElement(body, usedAttributes);
         return doc.toString();
     }
 
