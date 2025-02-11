@@ -30,7 +30,14 @@ public class NotImplemented extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
-        Element div2 = body.appendElement(HTML_DIV).text("Not implemented: " + this.getName());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Not implemented: ");
+        sb.append("@");
+        sb.append(this.getName());
+        if (this.getType() == ElementType.ATTRIBUTE) {
+            sb.append(": ");
+        }
+        Element div2 = body.appendElement(HTML_DIV).text(sb.toString());
         this.appendChildrenToElement(div2);
         //add div2 to div
         div.appendChild(div2);
