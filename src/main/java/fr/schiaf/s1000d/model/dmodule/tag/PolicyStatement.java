@@ -14,9 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class RandomList extends ElementXML {
+public class PolicyStatement extends ElementXML {
 
-    RandomList() {
+    private static final String S1000D_TITLE = "Policy Statement: ";
+
+    PolicyStatement() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -28,14 +30,11 @@ public class RandomList extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        Element ul = body.appendElement(HTML_UL);
-        String prefix = this.getAttribute("listItemPrefix");
-        if (prefix != null && !prefix.isEmpty()) {
-            ul.addClass(prefix);
-        }
-        List<String> usedAttributes = Arrays.asList("listItemPrefix");
-
-        this.appendChildrenToElement(ul, usedAttributes);
+        Element div = body.appendElement(HTML_DIV).addClass("indented");
+        div.appendElement(HTML_SPAN).text(S1000D_TITLE).addClass("bold");
+        Element span = div.appendElement(HTML_SPAN);
+        List<String> usedAttributes = Arrays.asList("");
+        this.appendChildrenToElement(span, usedAttributes);
         return doc.toString();
     }
 

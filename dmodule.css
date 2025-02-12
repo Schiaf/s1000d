@@ -13,3 +13,48 @@
 .nottreated {
     color: red;
 }
+
+p {
+    margin: 0;
+}
+
+.indented {
+    margin-left: 2em; /* Adjust the value as needed */
+}
+
+.pf01 {
+    list-style-type: none;
+}
+
+.pf02 {
+    list-style-type: none;
+}
+
+/* Define alternating styles for up to 4 levels */
+.pf02 > li::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.pf02 > li > ul > li {
+    list-style-type: disc;
+}
+
+.pf02 > li > ul > li > ul > li::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.pf02 > li > ul > li > ul > li > ul > li {
+    list-style-type: disc;
+}
+
+.pf03::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.IdentAndStatusSection {
+    background-color: #ffcccc; /* Light red background color */
+    margin-bottom: 0;
+}

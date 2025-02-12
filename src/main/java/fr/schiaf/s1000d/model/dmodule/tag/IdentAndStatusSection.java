@@ -34,8 +34,8 @@ public class IdentAndStatusSection extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        body.appendElement(HTML_H1).text(S1000D_STATUS);
-        Element div = body.appendElement(HTML_DIV);
+        body.appendElement(HTML_H1).text(S1000D_STATUS).addClass(this.getClass().getSimpleName());
+        Element div = body.appendElement(HTML_DIV).addClass(this.getClass().getSimpleName());
         List<String> usedAttributes = Arrays.asList("");
         this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();

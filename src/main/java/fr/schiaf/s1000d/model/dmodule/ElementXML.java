@@ -57,7 +57,7 @@ public abstract class ElementXML {
         return doc.toString();
     }
 
-    protected void appendChildrenToElement(Element tag, List<String> usedAttributes) {
+    protected void appendChildrenToElement(Element tag, List<String> usedAttributes, String... classes) {
         Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
         if (span2.childNodeSize() != 0) {
             tag.insertChildren(0, span2);
@@ -66,6 +66,13 @@ public abstract class ElementXML {
             String childHtml = child.toHtml();
             Document childDoc = Jsoup.parse(childHtml);
             for (Node element : childDoc.body().childNodes()) {
+                // if element is a tag, add the classes
+                if (element instanceof Element) {
+                    Element elementElement = (Element) element;
+                    for (String clazz : classes) {
+                        elementElement.addClass(clazz);
+                    }
+                }
                 tag.appendChild(element);
             }
         }
