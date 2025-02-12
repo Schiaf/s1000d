@@ -53,7 +53,7 @@ public class DmCode extends ElementXML {
         dmc.append(this.getAttribute("infoCodeVariant"));
         dmc.append(DASH);
         dmc.append(this.getAttribute("itemLocationCode"));
-        div.appendElement(HTML_SPAN).text(dmc.toString());
+        div.appendElement(HTML_SPAN).attr("name", "dmc").text(dmc.toString());
         this.appendChildrenToElement(div, usedAttributes);
 
         return doc.toString();

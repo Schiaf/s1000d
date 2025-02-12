@@ -21,6 +21,8 @@ public abstract class ElementXML {
     List<ElementXML> attributes;
     List<ElementXML> children;
 
+    protected static final String HTML_HREF = "href";
+    protected static final String HTML_A = "a";
     protected static final String HTML_DIV = "div";
     protected static final String HTML_SPAN = "span";
     protected static final String HTML_P = "p";
@@ -57,25 +59,32 @@ public abstract class ElementXML {
         return doc.toString();
     }
 
-    protected void appendChildrenToElement(Element tag, List<String> usedAttributes, String... classes) {
+    protected void appendChildrenToElement(Element tag, List<String> usedAttributes, List<String> usedTags, String... classes) {
         Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
         if (span2.childNodeSize() != 0) {
             tag.insertChildren(0, span2);
         }
         for (ElementXML child : this.getChildren()) {
-            String childHtml = child.toHtml();
-            Document childDoc = Jsoup.parse(childHtml);
-            for (Node element : childDoc.body().childNodes()) {
-                // if element is a tag, add the classes
-                if (element instanceof Element) {
-                    Element elementElement = (Element) element;
-                    for (String clazz : classes) {
-                        elementElement.addClass(clazz);
+            if (!usedTags.contains(child.getName())) {
+                String childHtml = child.toHtml();
+                Document childDoc = Jsoup.parse(childHtml);
+                for (Node element : childDoc.body().childNodes()) {
+                    // if element is a tag, add the classes
+                    if (element instanceof Element) {
+                        Element elementElement = (Element) element;
+                        for (String clazz : classes) {
+                            elementElement.addClass(clazz);
+                        }
                     }
+                    tag.appendChild(element);
                 }
-                tag.appendChild(element);
             }
         }
+    }
+
+    protected void appendChildrenToElement(Element tag, List<String> usedAttributes, String... classes) {
+        List<String> defaultUsedTags = Arrays.asList(""); // Default value for usedTags
+        appendChildrenToElement(tag, usedAttributes, defaultUsedTags, classes);
     }
 
     public String getAttribute(String name) {
