@@ -58,3 +58,11 @@ p {
     background-color: #ffcccc; /* Light red background color */
     margin-bottom: 0;
 }
+
+.andOr::before {
+    content: " ";
+}
+
+.andOr::after {
+    content: " ";
+}

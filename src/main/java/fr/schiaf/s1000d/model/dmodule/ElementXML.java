@@ -18,6 +18,7 @@ public abstract class ElementXML {
     String private_id;
     String name;
     ElementType type;
+    ElementXML parent;
     List<ElementXML> attributes;
     List<ElementXML> children;
 
@@ -57,6 +58,16 @@ public abstract class ElementXML {
         List<String> usedAttributes = Arrays.asList("");
         this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
+    }
+
+    protected ElementXML getNextSibling() {
+        ElementXML parent = this.getParent();
+        List<ElementXML> children = parent.getChildren();
+        int index = children.indexOf(this);
+        if (index < children.size() - 1) {
+            return children.get(index + 1);
+        }
+        return null;
     }
 
     protected void appendChildrenToElement(Element tag, List<String> usedAttributes, List<String> usedTags, String... classes) {

@@ -24,13 +24,13 @@ public class ElementService {
     private ElementFactory elementFactory;
 
     public void processElements() {
-        ElementXML dmodule = elementFactory.createElement("dmodule", ElementType.TAG);
-        ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection", ElementType.TAG);
-        ElementXML dmAddress = elementFactory.createElement("dmAddress", ElementType.TAG);
-        ElementXML dmIdent = elementFactory.createElement("dmIdent", ElementType.TAG);
-        ElementXML dmCode = elementFactory.createElement("dmCode", ElementType.TAG);
-        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode", ElementType.ATTRIBUTE);
-        ElementXML modelIdentCodeText = elementFactory.createElement("text", ElementType.TEXT);
+        ElementXML dmodule = elementFactory.createElement("dmodule", ElementType.TAG, null);
+        ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection", ElementType.TAG, dmodule);
+        ElementXML dmAddress = elementFactory.createElement("dmAddress", ElementType.TAG, identAndStatusSection);
+        ElementXML dmIdent = elementFactory.createElement("dmIdent", ElementType.TAG, dmAddress);
+        ElementXML dmCode = elementFactory.createElement("dmCode", ElementType.TAG, dmIdent);
+        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode", ElementType.ATTRIBUTE, dmCode);
+        ElementXML modelIdentCodeText = elementFactory.createElement("text", ElementType.TEXT, modelIdentCode);
         modelIdentCodeText.setName("BRAKE");
         modelIdentCode.getChildren().add(modelIdentCodeText);
         dmCode.getAttributes().add(modelIdentCode);
@@ -64,10 +64,10 @@ public class ElementService {
         for (Node child : children) {
             //switch case for different types of nodes
             if (child instanceof Element) {
-                ElementXML newElement = elementFactory.createElement(((Element) child).tagName(),ElementType.TAG);
+                ElementXML newElement = elementFactory.createElement(((Element) child).tagName(),ElementType.TAG, element);
                 for (org.jsoup.nodes.Attribute attribute : ((Element) child).attributes()) {
-                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey(), ElementType.ATTRIBUTE);
-                    ElementXML newAttributeValue = elementFactory.createElement("text", ElementType.TEXT);
+                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey(), ElementType.ATTRIBUTE, newElement);
+                    ElementXML newAttributeValue = elementFactory.createElement("text", ElementType.TEXT, newAttribute);
                     newAttributeValue.setName(attribute.getValue());
                     newAttribute.getChildren().add(newAttributeValue);
                     newElement.getAttributes().add(newAttribute);
@@ -80,7 +80,7 @@ public class ElementService {
                     element.getChildren().add(newElement);
                 }
             }else if (child instanceof org.jsoup.nodes.TextNode) {
-                ElementXML newElement = elementFactory.createElement("text", ElementType.TEXT);
+                ElementXML newElement = elementFactory.createElement("text", ElementType.TEXT, element);
                 //if text node is not empty
                 if (!((org.jsoup.nodes.TextNode) child).text().trim().isEmpty()){
                     //get parent type node
