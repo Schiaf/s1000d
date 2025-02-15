@@ -14,11 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class AAA extends ElementXML {
+public class SystemBreakdownCode extends ElementXML {
 
-    private static final String S1000D_TITLE = "Language: ";
+    private static final String S1000D_TITLE = "System Breakdown Code: ";
     
-    AAA() {
+    SystemBreakdownCode() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -34,12 +34,6 @@ public class AAA extends ElementXML {
         List<String> usedAttributes = Arrays.asList("");
         Element span = div.appendElement(HTML_SPAN).text(S1000D_TITLE);
         span.addClass("bold");
-        StringBuilder lang = new StringBuilder();
-        lang.append(this.getAttribute("languageIsoCode"));
-        lang.append(DASH);
-        lang.append(this.getAttribute("countryIsoCode"));
-        //add other attributes
-        div.appendElement(HTML_SPAN).text(lang.toString());
         this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }

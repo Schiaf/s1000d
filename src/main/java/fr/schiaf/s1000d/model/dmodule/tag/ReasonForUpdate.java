@@ -14,11 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class AAA extends ElementXML {
+public class ReasonForUpdate extends ElementXML {
 
-    private static final String S1000D_TITLE = "Language: ";
+    private static final String S1000D_TITLE = "Reason for Update ";
     
-    AAA() {
+    ReasonForUpdate() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -31,16 +31,19 @@ public class AAA extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
-        List<String> usedAttributes = Arrays.asList("");
-        Element span = div.appendElement(HTML_SPAN).text(S1000D_TITLE);
+        List<String> usedAttributes = Arrays.asList("updateReasonType", "id");
+        StringBuilder rfu = new StringBuilder();
+        rfu.append(S1000D_TITLE);
+        String urt = this.getAttribute("updateReasonType");
+        if (urt != null && !urt.isEmpty()) {
+            rfu.append("(");
+            rfu.append(urt);
+            rfu.append(")");
+        }
+        rfu.append(": ");
+        Element span = div.appendElement(HTML_SPAN).text(rfu.toString());
         span.addClass("bold");
-        StringBuilder lang = new StringBuilder();
-        lang.append(this.getAttribute("languageIsoCode"));
-        lang.append(DASH);
-        lang.append(this.getAttribute("countryIsoCode"));
-        //add other attributes
-        div.appendElement(HTML_SPAN).text(lang.toString());
-        this.appendChildrenToElement(div, usedAttributes);
+        this.appendChildrenToElement(div, usedAttributes, "indented");
         return doc.toString();
     }
 
