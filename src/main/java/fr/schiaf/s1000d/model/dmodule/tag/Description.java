@@ -14,13 +14,11 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class IdentAndStatusSection extends ElementXML {
+public class Description extends ElementXML {
 
-    private static final String S1000D_STATUS= "STATUS";
+    private static final String S1000D_TITLE = "Description";
 
-
-
-    IdentAndStatusSection() {
+    Description() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
         this.setAttributes(new LinkedList<ElementXML>());
@@ -32,8 +30,8 @@ public class IdentAndStatusSection extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        body.appendElement(HTML_H1).text(S1000D_STATUS).addClass(this.getClass().getSimpleName());
-        Element div = body.appendElement(HTML_DIV).addClass(this.getClass().getSimpleName());
+        body.appendElement(HTML_H1).text(S1000D_TITLE);
+        Element div = body.appendElement(HTML_DIV);
         List<String> usedAttributes = Arrays.asList("");
         this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();

@@ -22,7 +22,14 @@ public abstract class ElementXML {
     List<ElementXML> attributes;
     List<ElementXML> children;
 
+    protected static final String HTML_H1= "h1";
+    protected static final String HTML_H2 = "h2";
+    protected static final String HTML_H3 = "h3";
+    protected static final String HTML_H4 = "h4";
+    protected static final String HTML_H5 = "h5";
+    protected static final String HTML_H6 = "h6";
     protected static final String HTML_HREF = "href";
+    protected static final String HTML_HR = "hr";
     protected static final String HTML_A = "a";
     protected static final String HTML_DIV = "div";
     protected static final String HTML_SPAN = "span";
@@ -135,4 +142,23 @@ public abstract class ElementXML {
         return span2;
     }
 
+    public ElementXML getElementXMLbyID(String id) {
+        if (this.getAttribute("id") != null && this.getAttribute("id").equals(id)) {
+            return this;
+        }
+        for (ElementXML child : this.getChildren()) {
+            ElementXML result = child.getElementXMLbyID(id);
+            if (result != null) {
+                return result;
+            }
+        }   
+        return null;
+    }
+
+    protected ElementXML getRootElementXML() {
+        if (this.getParent() == null) {
+            return this;
+        }
+        return this.getParent().getRootElementXML();
+    }
 }

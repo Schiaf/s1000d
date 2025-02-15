@@ -31,6 +31,7 @@ public class ReasonForUpdate extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
+        div.attributes().put("id", this.getAttribute("id"));
         List<String> usedAttributes = Arrays.asList("updateReasonType", "id");
         StringBuilder rfu = new StringBuilder();
         rfu.append(S1000D_TITLE);

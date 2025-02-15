@@ -29,7 +29,8 @@ public class Para extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element p = body.appendElement(HTML_P);
-        List<String> usedAttributes = Arrays.asList("");
+        p.attributes().put("id", this.getAttribute("id"));
+        List<String> usedAttributes = Arrays.asList("id");
         this.appendChildrenToElement(p, usedAttributes);
 
         return doc.toString();
