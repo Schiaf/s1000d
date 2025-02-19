@@ -13,7 +13,7 @@ public class ElementFactoryImpl implements ElementFactory {
     private ApplicationContext applicationContext;
 
     @Override
-    public ElementXML createElement(String type, ElementType elementType, ElementXML parent) {
+    public ElementXML createElement(String type, ElementType elementType, ElementXML parent, DataModule dataModule) {
         ElementXML elt = null;
         Class<?> clazz = null;
         String[] basePackages = { "fr.schiaf.s1000d.model.dmodule.tag", "fr.schiaf.s1000d.model.dmodule.attribute",
@@ -38,6 +38,7 @@ public class ElementFactoryImpl implements ElementFactory {
         elt.setName(type);
         elt.setType(elementType);
         elt.setParent(parent);
+        elt.setDataModule(dataModule);
         return elt;
     }
 }

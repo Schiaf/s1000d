@@ -25,37 +25,18 @@ public class ElementService {
     @Autowired
     private ElementFactory elementFactory;
 
-    public void processElements() {
-        ElementXML dmodule = elementFactory.createElement("dmodule", ElementType.TAG, null);
-        ElementXML identAndStatusSection = elementFactory.createElement("identAndStatusSection", ElementType.TAG, dmodule);
-        ElementXML dmAddress = elementFactory.createElement("dmAddress", ElementType.TAG, identAndStatusSection);
-        ElementXML dmIdent = elementFactory.createElement("dmIdent", ElementType.TAG, dmAddress);
-        ElementXML dmCode = elementFactory.createElement("dmCode", ElementType.TAG, dmIdent);
-        ElementXML modelIdentCode = elementFactory.createElement("modelIdentCode", ElementType.ATTRIBUTE, dmCode);
-        ElementXML modelIdentCodeText = elementFactory.createElement("text", ElementType.TEXT, modelIdentCode);
-        modelIdentCodeText.setName("BRAKE");
-        modelIdentCode.getChildren().add(modelIdentCodeText);
-        dmCode.getAttributes().add(modelIdentCode);
-        dmIdent.getChildren().add(dmCode);
-        dmAddress.getChildren().add(dmIdent);
-        identAndStatusSection.getChildren().add(dmAddress);
-        dmodule.getChildren().add(identAndStatusSection);
-        System.out.println(dmodule.toS1000DXml());
-        System.out.println(dmodule.toHtml());
-    }
-
     //readFile
     public void processElementsFromFile(String filePath) {
         try {
             File input = new File(filePath);
             Document doc = Jsoup.parse(input, "UTF-8", "",  Parser.xmlParser());
             DataModule dataModule = new DataModule();
-            ElementXML root = null;
-            root = addChildrens(root, doc.childNodes());
-            dataModule.setRoot(root);
             dataModule.setXmlDeclaration(getXMLDeclaration(doc.childNodes()));
             dataModule.setDoctype(getDoctype(doc.childNodes()));
             dataModule.setEntities(getEntities(doc.childNodes()));
+            ElementXML root = null;
+            root = addChildrens(root, doc.childNodes(), dataModule);
+            dataModule.setRoot(root);
 
             //write root.toHtml() to file "output.html"
             File output = new File("output.html");
@@ -101,19 +82,19 @@ public class ElementService {
         return entities;
     }
 
-    public ElementXML addChildrens(ElementXML element, List<Node> children) {
+    public ElementXML addChildrens(ElementXML element, List<Node> children, DataModule dataModule) {
         for (Node child : children) {
             //switch case for different types of nodes
             if (child instanceof Element) {
-                ElementXML newElement = elementFactory.createElement(((Element) child).tagName(),ElementType.TAG, element);
+                ElementXML newElement = elementFactory.createElement(((Element) child).tagName(),ElementType.TAG, element, dataModule);
                 for (org.jsoup.nodes.Attribute attribute : ((Element) child).attributes()) {
-                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey(), ElementType.ATTRIBUTE, newElement);
-                    ElementXML newAttributeValue = elementFactory.createElement("text", ElementType.TEXT, newAttribute);
+                    ElementXML newAttribute = elementFactory.createElement(attribute.getKey(), ElementType.ATTRIBUTE, newElement, dataModule);
+                    ElementXML newAttributeValue = elementFactory.createElement("text", ElementType.TEXT, newAttribute, dataModule);
                     newAttributeValue.setName(attribute.getValue());
                     newAttribute.getChildren().add(newAttributeValue);
                     newElement.getAttributes().add(newAttribute);
                 }
-                addChildrens(newElement, ((Element) child).childNodes());
+                addChildrens(newElement, ((Element) child).childNodes(), dataModule);
 
                 if (element == null) {
                     element = newElement;
@@ -121,7 +102,7 @@ public class ElementService {
                     element.getChildren().add(newElement);
                 }
             }else if (child instanceof org.jsoup.nodes.TextNode) {
-                ElementXML newElement = elementFactory.createElement("text", ElementType.TEXT, element);
+                ElementXML newElement = elementFactory.createElement("text", ElementType.TEXT, element, dataModule);
                 //if text node is not empty
                 if (!((org.jsoup.nodes.TextNode) child).text().trim().isEmpty()){
                     //get parent type node

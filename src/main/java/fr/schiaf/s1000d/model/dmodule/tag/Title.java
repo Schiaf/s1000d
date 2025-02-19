@@ -31,9 +31,13 @@ public class Title extends ElementXML {
         //count the number of levelledPara ancestors tag
         int level = 0;
         ElementXML parent = this.getParent();
-        while (parent instanceof LevelledPara) {
-            level++;
-            parent = parent.getParent();
+        if (parent instanceof LevelledPara) {
+            while (parent instanceof LevelledPara) {
+                level++;
+                parent = parent.getParent();
+            }
+        }else if (parent instanceof Figure) {
+            level = 6;
         }
         Element hx = null;
         switch (level) {

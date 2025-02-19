@@ -71,6 +71,18 @@ p {
     content: " ";
 }
 
+.graphic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.figure > span {
+    display: block;
+    text-align: center;
+}
+
+
 body {
     counter-reset: section; /* Initialize the section counter */
 }

@@ -19,6 +19,7 @@ public abstract class ElementXML {
     String name;
     ElementType type;
     ElementXML parent;
+    DataModule dataModule;
     List<ElementXML> attributes;
     List<ElementXML> children;
 
@@ -32,6 +33,7 @@ public abstract class ElementXML {
     protected static final String HTML_HR = "hr";
     protected static final String HTML_A = "a";
     protected static final String HTML_DIV = "div";
+    protected static final String HTML_IMG = "img";
     protected static final String HTML_SPAN = "span";
     protected static final String HTML_P = "p";
     protected static final String HTML_LI = "li";
@@ -61,8 +63,12 @@ public abstract class ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
-        Element div = body.appendElement(HTML_DIV);
-        List<String> usedAttributes = Arrays.asList("");
+        Element div = body.appendElement(HTML_DIV).addClass(name);
+        String id = this.getAttribute("id");
+        if (id != null && !id.isEmpty()) {  
+            div.attr("id", id);
+        }
+        List<String> usedAttributes = Arrays.asList("id");
         this.appendChildrenToElement(div, usedAttributes);
         return doc.toString();
     }
