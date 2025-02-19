@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.tag.*;
-import fr.schiaf.s1000d.model.dmodule.attribute.*;
-import fr.schiaf.s1000d.model.dmodule.generic.*;
+import fr.schiaf.s1000d.model.dmodule.generic.NotImplemented;
 
 @Component
 public class ElementFactoryImpl implements ElementFactory {
@@ -15,7 +13,7 @@ public class ElementFactoryImpl implements ElementFactory {
     private ApplicationContext applicationContext;
 
     @Override
-    public ElementXML createElement(String type) {
+    public ElementXML createElement(String type, ElementType elementType, ElementXML parent, DataModule dataModule) {
         ElementXML elt = null;
         Class<?> clazz = null;
         String[] basePackages = { "fr.schiaf.s1000d.model.dmodule.tag", "fr.schiaf.s1000d.model.dmodule.attribute",
@@ -38,6 +36,9 @@ public class ElementFactoryImpl implements ElementFactory {
         }
 
         elt.setName(type);
+        elt.setType(elementType);
+        elt.setParent(parent);
+        elt.setDataModule(dataModule);
         return elt;
     }
 }

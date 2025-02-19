@@ -1,6 +1,8 @@
 package fr.schiaf.s1000d.model.dmodule.generic;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import org.jsoup.nodes.Document;
@@ -29,12 +31,21 @@ public class NotImplemented extends ElementXML {
         Document doc = Document.createShell("");
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
+        List<String> usedAttributes = Arrays.asList("");
         Element div = body.appendElement(HTML_DIV);
-        Element div2 = body.appendElement(HTML_DIV).text("Not implemented: " + this.getName());
-        this.appendChildrenToElement(div2);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Not implemented: ");
+        if (this.getType() == ElementType.ATTRIBUTE) {
+            sb.append("@");
+        }
+        sb.append(this.getName());
+        if (this.getType() == ElementType.ATTRIBUTE) {
+            sb.append(": ");
+        }
+        Element div2 = body.appendElement(HTML_DIV).text(sb.toString()).addClass("nottreated");
+        this.appendChildrenToElement(div2, usedAttributes);
         //add div2 to div
         div.appendChild(div2);
-        this.appendChildrenToElement(div);
         return doc.toString();
     }
 

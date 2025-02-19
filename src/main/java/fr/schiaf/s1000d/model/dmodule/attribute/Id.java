@@ -6,18 +6,15 @@ import java.util.UUID;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.schiaf.s1000d.model.dmodule.ElementType;
 import fr.schiaf.s1000d.model.dmodule.ElementXML;
 
 @Component
 @Scope("prototype")
-public class DiassyCodeVariant extends ElementXML {
+public class Id extends ElementXML {
 
-    DiassyCodeVariant() {
+    Id() {
         //generate ramdom unique id based on uuid
         this.setPrivate_id(UUID.randomUUID().toString());
-        this.setName("diassyCodeVariant");
-        this.setType(ElementType.ATTRIBUTE);
         this.setAttributes(null);
         this.setChildren(new LinkedList<ElementXML>());
     }

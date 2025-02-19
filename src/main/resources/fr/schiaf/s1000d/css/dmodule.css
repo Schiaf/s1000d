@@ -1,0 +1,130 @@
+.bold {
+    font-weight: bold;
+}
+
+.inline {
+    display: inline;
+}
+
+.block {
+    display: block;
+}
+
+.nottreated {
+    color: red;
+}
+
+p {
+    margin: 0;
+}
+
+.indented {
+    margin-left: 2em; /* Adjust the value as needed */
+}
+
+.pf01 {
+    list-style-type: none;
+}
+
+.pf02 {
+    list-style-type: none;
+}
+
+/* Define alternating styles for up to 4 levels */
+.pf02 > li::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.pf02 > li > ul > li {
+    list-style-type: disc;
+}
+
+.pf02 > li > ul > li > ul > li::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.pf02 > li > ul > li > ul > li > ul > li {
+    list-style-type: disc;
+}
+
+.pf03::marker {
+    content: "- ";
+    font-weight: bolder;
+}
+
+.IdentAndStatusSection {
+    background-color: #ffcccc; /* Light red background color */
+    margin-bottom: 0;
+}
+
+.IndexFlag {
+    display: none;
+}
+
+.andOr::before {
+    content: " ";
+}
+
+.andOr::after {
+    content: " ";
+}
+
+.graphic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.figure > span {
+    display: block;
+    text-align: center;
+}
+
+
+body {
+    counter-reset: section; /* Initialize the section counter */
+}
+
+h2 {
+    counter-reset: subsection; /* Reset subsection counter for each section */
+}
+
+h3 {
+    counter-reset: subsubsection; /* Reset subsubsection counter for each subsection */
+}
+
+h4 {
+    counter-reset: subsubsubsection; /* Reset subsubsubsection counter for each subsubsection */
+}
+
+h5 {
+    counter-reset: subsubsubsubsection; /* Reset subsubsubsubsection counter for each subsubsubsection */
+}
+
+h2::before {
+    counter-increment: section; /* Increment the section counter */
+    content: counter(section) ". "; /* Display the section number */
+}
+
+h3::before {
+    counter-increment: subsection; /* Increment the subsection counter */
+    content: counter(section) "." counter(subsection) " "; /* Display the section and subsection numbers */
+}
+
+h4::before {
+    counter-increment: subsubsection; /* Increment the subsubsection counter */
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) " "; /* Display the section, subsection, and subsubsection numbers */
+}
+
+h5::before {
+    counter-increment: subsubsubsection; /* Increment the subsubsubsection counter */
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) "." counter(subsubsubsection) " "; /* Display the section, subsection, subsubsection, and subsubsubsection numbers */
+}
+
+h6::before {
+    counter-increment: subsubsubsubsection; /* Increment the subsubsubsubsection counter */
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) "." counter(subsubsubsection) "." counter(subsubsubsubsection) " "; /* Display the section, subsection, subsubsection, subsubsubsection, and subsubsubsubsection numbers */
+}
+
