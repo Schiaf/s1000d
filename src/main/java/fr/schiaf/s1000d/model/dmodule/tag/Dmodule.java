@@ -42,7 +42,16 @@ public class Dmodule extends ElementXML {
         head.appendElement("link").attr("rel", "stylesheet").attr("href", "dmodule.css");
         //get the body element
         Element body = doc.body();
-        List<String> usedAttributes = Arrays.asList("");
+        Element div = body.appendElement(HTML_DIV);
+        Element h1Element = div.appendElement(HTML_H1);
+        body.appendChild(div);
+        div.appendChild(h1Element);
+        StringBuilder dmc = new StringBuilder();
+        dmc.append("DMC-");
+        DmCode dmCode = (DmCode) this.getElementXMLbyName("dmCode");
+        dmc.append(dmCode.getDmc());
+        h1Element.text(dmc.toString());
+        List<String> usedAttributes = Arrays.asList("dc", "rdf", "xsi", "xlink", "noNamespaceSchemaLocation");
         //add the children
         this.appendChildrenToElement(body, usedAttributes);
         return doc.toString();

@@ -44,6 +44,8 @@ public class ElementService {
             //copy css file to the same directory
             File css = new File("dmodule.css");
             FileUtils.copyFile(new File("src/main/resources/fr/schiaf/s1000d/css/dmodule.css"), css);
+            File imgNotSuppFile = new File("NotSupported.png");
+            FileUtils.copyFile(new File("src/main/resources/fr/schiaf/s1000d/img/NotSupported.png"), imgNotSuppFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
