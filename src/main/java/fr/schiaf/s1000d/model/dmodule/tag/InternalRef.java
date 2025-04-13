@@ -32,9 +32,17 @@ public class InternalRef extends ElementXML {
         String refid = this.getAttribute("internalRefId");
         String type = this.getAttribute("internalRefTargetType");
         String content = "click here";
+        ElementXML elem = this.getRootElementXML().getElementXMLbyID(refid);
         switch (type) {
             case "irtt01":
-                
+                content = "Figure ";
+                if (elem != null) {
+                    //get the first child of the paragraph
+                    ElementXML firstChild = elem.getChildren().get(0);
+                    if (firstChild != null && firstChild instanceof Title) {
+                        content += firstChild.getChildren().get(0).toHtml();
+                    }
+                }
                 break;
             case "irtt02":
 
@@ -53,7 +61,6 @@ public class InternalRef extends ElementXML {
                 break;
             case "irtt07":
                 content = "Paragraph ";
-                ElementXML elem = this.getRootElementXML().getElementXMLbyID(refid);
                 if (elem != null) {
                     //get the first child of the paragraph
                     ElementXML firstChild = elem.getChildren().get(0);
