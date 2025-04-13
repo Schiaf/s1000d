@@ -34,6 +34,14 @@ public class DmCode extends ElementXML {
         List<String> usedAttributes = Arrays.asList("modelIdentCode", "systemDiffCode", "systemCode", "subSystemCode", "subSubSystemCode", "assyCode", "disassyCode", "disassyCodeVariant", "infoCode", "infoCodeVariant", "itemLocationCode"); 
         Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_DMC);
         span.addClass("bold");
+       
+        div.appendElement(HTML_SPAN).attr("name", "dmc").text(this.getDmc());
+        this.appendChildrenToElement(div, usedAttributes);
+
+        return doc.toString();
+    }
+
+    public String getDmc(){
         StringBuilder dmc = new StringBuilder();
         dmc.append(this.getAttribute("modelIdentCode"));
         dmc.append(DASH);
@@ -53,10 +61,7 @@ public class DmCode extends ElementXML {
         dmc.append(this.getAttribute("infoCodeVariant"));
         dmc.append(DASH);
         dmc.append(this.getAttribute("itemLocationCode"));
-        div.appendElement(HTML_SPAN).attr("name", "dmc").text(dmc.toString());
-        this.appendChildrenToElement(div, usedAttributes);
-
-        return doc.toString();
+        return dmc.toString();
     }
 
 }

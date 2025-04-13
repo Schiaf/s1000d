@@ -161,6 +161,19 @@ public abstract class ElementXML {
         return null;
     }
 
+    public ElementXML getElementXMLbyName(String name) {
+        if (this.getName() != null && this.getName().equals(name)) {
+            return this;
+        }
+        for (ElementXML child : this.getChildren()) {
+            ElementXML result = child.getElementXMLbyName(name);
+            if (result != null) {
+                return result;
+            }
+        }   
+        return null;
+    }
+
     protected ElementXML getRootElementXML() {
         if (this.getParent() == null) {
             return this;
