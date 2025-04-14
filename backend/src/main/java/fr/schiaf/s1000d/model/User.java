@@ -15,6 +15,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING) // Store the enum as a string in the database
+    @Column(name = "roles", nullable = false, columnDefinition = "varchar(255) default 'ROLE_USER'")
+    private Role roles;
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -38,5 +42,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Role roles) {
+        this.roles = roles;
     }
 }

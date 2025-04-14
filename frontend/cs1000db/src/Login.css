@@ -1,46 +1,40 @@
-/* Centrer le formulaire sur la page */
-body {
+/* Conteneur principal */
+.login-container {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Conteneur du formulaire */
-form {
-  background-color: #ffffff;
-  padding: 20px 30px;
+  color: #333;
+  padding: 20px;
+  max-width: 400px;
+  margin: 50px auto;
+  border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
 }
 
 /* Titre */
-h2 {
+.login-title {
   text-align: center;
-  color: #333333;
+  color: #007bff;
   margin-bottom: 20px;
 }
 
+/* Formulaire */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Champs de saisie */
-input[type="text"],
-input[type="password"] {
-  width: 100%;
+.login-input {
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #cccccc;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
+  font-size: 16px;
 }
 
 /* Bouton de connexion */
-button {
-  width: 100%;
+.login-button {
   padding: 10px;
   background-color: #007bff;
   color: white;
@@ -50,14 +44,14 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.login-button:hover {
   background-color: #0056b3;
 }
 
 /* Message d'erreur */
-p {
+.login-error {
   color: red;
   font-size: 14px;
-  margin-top: 10px;
+  margin-bottom: 15px;
   text-align: center;
 }
