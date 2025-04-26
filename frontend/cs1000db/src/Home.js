@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css"; // Import the CSS file
 import About from "./About"; // Import the About component
+import UserManagement from "./UserManagement"; // Import the UserManagement component
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,6 +47,8 @@ const Home = () => {
   const renderContent = () => {
     if (activePage === "about") {
       return <About />;
+    } else if (activePage === "user-management") {
+      return <UserManagement />; // Render the UserManagement component
     }
 
     // Default to home page content
@@ -82,8 +85,9 @@ const Home = () => {
             {isAdmin && (
               <li>
                 <a
-                  href="/user-management"
+                  href="#"
                   onClick={() => {
+                    setActivePage("user-management");
                     setIsMenuOpen(false); // Close the menu
                   }}
                 >
@@ -118,6 +122,7 @@ const Home = () => {
       )}
       {renderContent()}
     </div>
-  )};
+  );
+};
 
 export default Home;
