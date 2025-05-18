@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Home.css"; // Import the CSS file
 import About from "./About"; // Import the About component
 import UserManagement from "./UserManagement"; // Import the UserManagement component
+import S1000D2Html from "./S1000D2Html"; // Import the UserManagement component
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,6 +50,8 @@ const Home = () => {
       return <About />;
     } else if (activePage === "user-management") {
       return <UserManagement />; // Render the UserManagement component
+    } else if (activePage === "s1000d2html") {
+      return <S1000D2Html />; // Render the UserManagement component
     }
 
     // Default to home page content
@@ -80,6 +83,17 @@ const Home = () => {
                 }}
               >
                 Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                onClick={() => {
+                  setActivePage("s1000d2html");
+                  setIsMenuOpen(false); // Close the menu
+                }}
+              >
+                About
               </a>
             </li>
             {isAdmin && (
