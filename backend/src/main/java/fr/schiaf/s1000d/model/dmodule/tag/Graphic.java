@@ -33,7 +33,7 @@ public class Graphic extends ElementXML {
         String boardno = this.getAttribute("infoEntityIdent");
         //get the image file from the boardno
         String src = this.getDataModule().getEntities().getOrDefault(boardno, boardno + ".SVG");
-        img.attr("src", src.replaceAll("\"", ""));
+        img.attr("src", src.replaceAll("\"", "").replaceAll("(?i)\\.CGM$", ".SVG"));
         img.attr("onerror", "this.onerror=null;this.src='NotSupported.png';");
         List<String> usedAttributes = Arrays.asList("infoEntityIdent");
         this.appendChildrenToElement(img, usedAttributes);

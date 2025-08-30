@@ -34,7 +34,7 @@ const S1000D2Html = () => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "transformed.html"; // Default download name
+        a.download = "transformed.zip"; // Default download name
         document.body.appendChild(a);
         a.click();
         a.remove();

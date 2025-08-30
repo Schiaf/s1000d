@@ -38,8 +38,8 @@ public class TransformController {
             // Utiliser ElementService pour traiter le fichier
             elementService.processElementsFromFile(tempFile.getAbsolutePath());
 
-            // Lire le fichier transformé (output.html)
-            File transformedFile = new File("output.html");
+            // Lire le fichier transformé (output.zip)
+            File transformedFile = new File("output.zip");
             if (!transformedFile.exists()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
@@ -48,9 +48,9 @@ public class TransformController {
 
             // Retourner le fichier transformé
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=transformed.html")
-                    .contentType(MediaType.TEXT_HTML)
-                    .body(resource);
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=transformed.zip")
+                .contentType(MediaType.parseMediaType("application/zip"))
+                .body(resource);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

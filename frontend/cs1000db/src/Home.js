@@ -93,7 +93,7 @@ const Home = () => {
                   setIsMenuOpen(false); // Close the menu
                 }}
               >
-                About
+                S1000D2HTML
               </a>
             </li>
             {isAdmin && (
