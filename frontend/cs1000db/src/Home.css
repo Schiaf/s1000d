@@ -1,0 +1,120 @@
+/* General styles for the page */
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light gray background for a professional look */
+  color: #212529; /* Dark gray for text */
+}
+
+/* Header container */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between burger button and title */
+  padding: 15px 20px;
+  background-color: #007bff; /* S1000D-inspired blue */
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Burger button styles */
+.burger-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  margin-right: 20px;
+}
+
+.burger-button:hover {
+  color: #d4e3fc; /* Lighter blue on hover */
+}
+
+/* Header title */
+h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1; /* Allow the title to take up remaining space */
+}
+
+/* Menu container */
+.menu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background: #ffffff;
+  border: 1px solid #dee2e6; /* Light gray border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 1000;
+  border-radius: 4px; /* Slightly rounded corners */
+}
+
+/* Menu list styles */
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+/* Menu list items */
+.menu-list li {
+  margin: 5px 0; /* Add spacing between items */
+  width: 90%; /* Ensure consistent width */
+  text-align: center;
+}
+
+/* Menu links */
+.menu-list a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 16px;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 4px; /* Rounded corners for links */
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.menu-list a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Menu buttons */
+.menu-list button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-list button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Logout button */
+.logoutButton {
+  background: none;
+  border: none;
+  color: #dc3545; /* Red for logout */
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #dc3545;
+  color: white;
+}

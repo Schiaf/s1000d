@@ -1,0 +1,57 @@
+/* Conteneur principal */
+.login-container {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding: 20px;
+  max-width: 400px;
+  margin: 50px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre */
+.login-title {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Formulaire */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Champs de saisie */
+.login-input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Bouton de connexion */
+.login-button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+/* Message d'erreur */
+.login-error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+}
