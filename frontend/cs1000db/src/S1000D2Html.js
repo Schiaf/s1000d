@@ -53,7 +53,7 @@ const S1000D2Html = () => {
     <div className="s1000d2html">
       <h2>S1000D to HTML Transformation</h2>
       <div>
-        <input type="file" accept=".xml" onChange={handleFileChange} />
+        <input type="file" accept=".zip" onChange={handleFileChange} />
         <button onClick={handleTransform} disabled={isTransforming}>
           {isTransforming ? "Transforming..." : "Transform"}
         </button>

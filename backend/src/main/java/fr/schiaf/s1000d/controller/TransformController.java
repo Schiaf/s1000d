@@ -32,8 +32,10 @@ public class TransformController {
     public ResponseEntity<Resource> transformFile(@RequestParam("file") MultipartFile file) {
         try {
             // Sauvegarder temporairement le fichier reçu
-            File tempFile = File.createTempFile("uploaded-", ".xml");
+            File tempFile = File.createTempFile("uploaded-", ".zip");
             file.transferTo(tempFile);
+            tempFile.deleteOnExit();
+
 
             // Utiliser ElementService pour traiter le fichier
             elementService.processElementsFromFile(tempFile.getAbsolutePath());
@@ -54,7 +56,7 @@ public class TransformController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        } 
     }
 }
 
