@@ -3,6 +3,7 @@ package fr.schiaf.s1000d.model.dmodule.tag;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.jsoup.nodes.Document;
@@ -29,8 +30,8 @@ public class InternalRef extends ElementXML {
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         Element body = doc.body();
         Element anchor = body.appendElement(HTML_A);
-        String refid = this.getAttribute("internalRefId");
-        String type = this.getAttribute("internalRefTargetType");
+        String refid = Optional.ofNullable(this.getAttribute("internalRefId")).orElse("");
+        String type = Optional.ofNullable(this.getAttribute("internalRefTargetType")).orElse("");
         String content = "click here";
         ElementXML elem = this.getRootElementXML().getElementXMLbyID(refid);
         switch (type) {
@@ -70,6 +71,7 @@ public class InternalRef extends ElementXML {
                 }
                 break;
             default:
+                content = "Broken Reference";
                 break;
         }
         anchor.attr(HTML_HREF, "#" + refid).text(content);
