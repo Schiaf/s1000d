@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,10 +37,10 @@ public class ElementService {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    //readFile
-    public void processElementsFromFile(String filePath) {
+    private ArrayList<File> processFile(File input){
+        ArrayList<File> res = new ArrayList<>();
         try {
-            File input = new File(filePath);
+            // If input is a zip file, unzip it to a temp directory and return the list
             //Add fake entity in input content <!ENTITY jsoup SYSTEM "jsoup" NDATA jsoup> after <!DOCTYPE dmodule [ for jsoup bug
             String content = FileUtils.readFileToString(input, "UTF-8");
             content = content.replace("<!DOCTYPE dmodule [", "<!DOCTYPE dmodule [\n<!ENTITY jsoup SYSTEM \"jsoup\" NDATA jsoup>");
@@ -53,7 +55,8 @@ public class ElementService {
             dataModule.setRoot(root);
 
             // Write output.html
-            File outputHtml = new File("output.html");
+            File outputHtml = new File(FilenameUtils.getBaseName(input.getName()) + ".html");
+            res.add(outputHtml);
             FileUtils.writeStringToFile(outputHtml, dataModule.getRoot().toHtml(), "UTF-8");
 
             //write img present in entities and list in imgList
@@ -69,6 +72,56 @@ public class ElementService {
                 FileUtils.copyInputStreamToFile(imgResource.getInputStream(), imgFile);
                 imgList.add(imgFile);  
             }
+            res.addAll(imgList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    //readFile
+    public void processElementsFromFile(String filePath) {
+        try {
+            ArrayList<File> res = new ArrayList<>();
+            File input = new File(filePath);
+            //si filePath est un zip, unzip it
+            if (filePath.toLowerCase().endsWith(".zip")) {
+                //unzip filePath in temp directory
+                File tempDir = new File("temp-" + java.util.UUID.randomUUID());
+                if (!tempDir.exists()) {
+                    tempDir.mkdir();
+                }
+                ZipFile zipFile = new ZipFile(input);
+                zipFile.stream().forEach(entry -> {
+                    try {
+                        File entryDestination = new File(tempDir, entry.getName());
+                        if (entry.isDirectory()) {
+                            entryDestination.mkdirs();
+                        } else {
+                            entryDestination.getParentFile().mkdirs();
+                            FileUtils.copyInputStreamToFile(zipFile.getInputStream(entry), entryDestination);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                zipFile.close();
+                //get first xml file in temp directory
+                File[] xmlFiles = tempDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".xml"));
+                if (xmlFiles != null && xmlFiles.length > 0) {
+                    for (File xmlFile : xmlFiles) {
+                        ArrayList<File> resFile = processFile(xmlFile);
+                        res.addAll(resFile);
+                    }
+                }else{
+                    System.out.println("No XML file found in the ZIP archive.");
+                }
+                tempDir.delete();
+            }else{
+                ArrayList<File> resFile = processFile(input);
+                res.addAll(resFile);
+            }
+
+            
 
             // Exemple pour charger dmodule.css depuis le classpath
             Resource cssResource = resourceLoader.getResource("classpath:fr/schiaf/s1000d/css/dmodule.css");
@@ -82,21 +135,19 @@ public class ElementService {
 
             // Create output.zip
             try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream("output.zip"))) {
-                addFileToZip(outputHtml, "", zos);
                 addFileToZip(css, "", zos);
                 addFileToZip(imgNotSuppFile, "", zos);
                 // Add all images from imgList
-                for (File imgFile : imgList) {
-                    addFileToZip(imgFile, "", zos);
+                for (File file : res) {
+                    addFileToZip(file, "", zos);
                 }
             }
 
             // Optionally, delete the temp files after zipping
-            outputHtml.delete();
             css.delete();
             imgNotSuppFile.delete();
-            for (File imgFile : imgList) {
-                imgFile.delete();
+            for (File file : res) {
+                file.delete();
             }
 
         } catch (IOException e) {
