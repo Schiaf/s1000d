@@ -31,8 +31,8 @@ public class Title extends ElementXML {
         //count the number of levelledPara ancestors tag
         int level = 0;
         ElementXML parent = this.getParent();
-        if (parent instanceof LevelledPara) {
-            while (parent instanceof LevelledPara) {
+        if (parent instanceof ProceduralStep || parent instanceof LevelledPara) {
+            while (parent instanceof ProceduralStep || parent instanceof LevelledPara) {
                 level++;
                 parent = parent.getParent();
             }
