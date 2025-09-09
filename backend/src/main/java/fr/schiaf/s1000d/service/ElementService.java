@@ -67,9 +67,8 @@ public class ElementService {
                 if (entityPath.toUpperCase().endsWith(".CGM")) {
                     entityPath = entityPath.replace(".CGM", ".SVG");
                 }
-                Resource imgResource = resourceLoader.getResource("classpath:fr/schiaf/s1000d/img/" + entityPath);
-                File imgFile = new File(entityPath);
-                FileUtils.copyInputStreamToFile(imgResource.getInputStream(), imgFile);
+                //search file in input parent directory
+                File imgFile = new File(input.getParentFile(), entityPath);
                 imgList.add(imgFile);  
             }
             res.addAll(imgList);
@@ -106,7 +105,7 @@ public class ElementService {
                 });
                 zipFile.close();
                 //get first xml file in temp directory
-                File[] xmlFiles = tempDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".xml"));
+                File[] xmlFiles = tempDir.listFiles((_, name) -> name.toLowerCase().endsWith(".xml"));
                 if (xmlFiles != null && xmlFiles.length > 0) {
                     for (File xmlFile : xmlFiles) {
                         ArrayList<File> resFile = processFile(xmlFile);

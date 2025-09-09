@@ -128,3 +128,24 @@ h6::before {
     content: counter(section) "." counter(subsection) "." counter(subsubsection) "." counter(subsubsubsection) "." counter(subsubsubsubsection) " "; /* Display the section, subsection, subsubsection, subsubsubsection, and subsubsubsubsection numbers */
 }
 
+table {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #333;
+    padding: 4px;
+    text-align: center;
+}
+
+.NoConds,
+.NoSafety,
+.NoSpares,
+.NoSupplies,
+.NoSupportEquips {
+    text-align: center;
+    font-weight: bold;
+}

@@ -39,6 +39,13 @@ public abstract class ElementXML {
     protected static final String HTML_LI = "li";
     protected static final String HTML_UL = "ul";
     protected static final String HTML_OL = "ol";
+    protected static final String HTML_TABLE = "table";
+    protected static final String HTML_TR = "tr";
+    protected static final String HTML_TD = "td";
+    protected static final String HTML_TH = "th";
+    protected static final String HTML_TBODY = "tbody";
+    protected static final String HTML_THEAD = "thead";
+    
     protected static final String DASH = "-";
 
     public String toS1000DXml() {
@@ -110,6 +117,26 @@ public abstract class ElementXML {
         List<String> defaultUsedTags = Arrays.asList(""); // Default value for usedTags
         appendChildrenToElement(tag, usedAttributes, defaultUsedTags, classes);
     }
+
+        protected void appendChildrenToTr(Element tag, List<String> usedAttributes, String... classes) {
+        Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
+        if (span2.childNodeSize() != 0) {
+            tag.insertChildren(0, span2);
+        }
+        for (ElementXML child : this.getChildren()) {
+            String childHtml = child.toHtml();
+            Document childDoc = Jsoup.parse(childHtml);
+            // for td elements
+            for (Element td : childDoc.select(HTML_TD)) {
+                Element elementElement = (Element) td;
+                for (String clazz : classes) {
+                    elementElement.addClass(clazz);
+                }
+                tag.appendChild(td);
+            }
+        }
+    }
+
 
     public String getAttribute(String name) {
         for (ElementXML attribute : getAttributes()) {
