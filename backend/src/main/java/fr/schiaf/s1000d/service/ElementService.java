@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
+import org.springframework.beans.factory.DisposableBean;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -29,7 +34,12 @@ import fr.schiaf.s1000d.model.dmodule.ElementFactory;
 import fr.schiaf.s1000d.model.dmodule.ElementType;
 
 @Service
-public class ElementService {
+public class ElementService implements DisposableBean {
+
+    // Thread pool partagé pour toute l'application (multiutilisateur)
+    private final ExecutorService executor = Executors.newFixedThreadPool(
+        Math.max(2, Runtime.getRuntime().availableProcessors())
+    );
 
     @Autowired
     private ElementFactory elementFactory;
@@ -40,7 +50,8 @@ public class ElementService {
     private ArrayList<File> processFile(File input){
         ArrayList<File> res = new ArrayList<>();
         try {
-            // If input is a zip file, unzip it to a temp directory and return the list
+            File tempDir = new File(System.getProperty("java.io.tmpdir"), "s1000d-" + java.util.UUID.randomUUID());
+            tempDir.mkdirs();
             //Add fake entity in input content <!ENTITY jsoup SYSTEM "jsoup" NDATA jsoup> after <!DOCTYPE dmodule [ for jsoup bug
             String content = FileUtils.readFileToString(input, "UTF-8");
             content = content.replace("<!DOCTYPE dmodule [", "<!DOCTYPE dmodule [\n<!ENTITY jsoup SYSTEM \"jsoup\" NDATA jsoup>");
@@ -55,7 +66,7 @@ public class ElementService {
             dataModule.setRoot(root);
 
             // Write output.html
-            File outputHtml = new File(FilenameUtils.getBaseName(input.getName()) + ".html");
+            File outputHtml = new File(tempDir, FilenameUtils.getBaseName(input.getName()) + ".html");
             res.add(outputHtml);
             FileUtils.writeStringToFile(outputHtml, dataModule.getRoot().toHtml(), "UTF-8");
 
@@ -68,7 +79,7 @@ public class ElementService {
                     entityPath = entityPath.replace(".CGM", ".SVG");
                 }
                 //search file in input parent directory
-                File imgFile = new File(input.getParentFile(), entityPath);
+                File imgFile = new File(input.getParentFile().getAbsolutePath(), entityPath);
                 imgList.add(imgFile);  
             }
             res.addAll(imgList);
@@ -82,10 +93,10 @@ public class ElementService {
         try {
             ArrayList<File> res = new ArrayList<>();
             File input = new File(filePath);
+            File tempDir = new File("temp-" + java.util.UUID.randomUUID());
             //si filePath est un zip, unzip it
             if (filePath.toLowerCase().endsWith(".zip")) {
                 //unzip filePath in temp directory
-                File tempDir = new File("temp-" + java.util.UUID.randomUUID());
                 if (!tempDir.exists()) {
                     tempDir.mkdir();
                 }
@@ -104,23 +115,31 @@ public class ElementService {
                     }
                 });
                 zipFile.close();
-                //get first xml file in temp directory
+                //get all xml files in temp directory
                 File[] xmlFiles = tempDir.listFiles((_, name) -> name.toLowerCase().endsWith(".xml"));
                 if (xmlFiles != null && xmlFiles.length > 0) {
+                    List<Callable<ArrayList<File>>> tasks = new ArrayList<>();
                     for (File xmlFile : xmlFiles) {
-                        ArrayList<File> resFile = processFile(xmlFile);
-                        res.addAll(resFile);
+                        tasks.add(() -> processFile(xmlFile));
                     }
-                }else{
+                    List<Future<ArrayList<File>>> futures = executor.invokeAll(tasks);
+                    for (Future<ArrayList<File>> future : futures) {
+                        try {
+                            res.addAll(future.get());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
                     System.out.println("No XML file found in the ZIP archive.");
                 }
-                tempDir.delete();
-            }else{
+                //delete temp directory
+            } else {
                 ArrayList<File> resFile = processFile(input);
                 res.addAll(resFile);
             }
-
-            
+            //avoid duplicate files in res
+            res = new ArrayList<>(new java.util.HashSet<>(res));
 
             // Exemple pour charger dmodule.css depuis le classpath
             Resource cssResource = resourceLoader.getResource("classpath:fr/schiaf/s1000d/css/dmodule.css");
@@ -145,13 +164,21 @@ public class ElementService {
             // Optionally, delete the temp files after zipping
             css.delete();
             imgNotSuppFile.delete();
+
             for (File file : res) {
-                file.delete();
+                if (file.getParentFile().exists()){
+                    FileUtils.deleteDirectory(file.getParentFile());
+                }
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    // Fermeture propre du pool à la destruction du bean Spring
+    @Override
+    public void destroy() {
+        executor.shutdown();
     }
 
 // Helper method to add a file to the ZIP

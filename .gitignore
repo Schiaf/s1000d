@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 frontend/cs1000db/node_modules/*
+output.zip
