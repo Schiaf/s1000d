@@ -17,6 +17,7 @@ import fr.schiaf.s1000d.model.dmodule.ElementXML;
 public class DmCode extends ElementXML {
 
     private static final String S1000D_DMC = "DMC: ";
+    private static final String S1000D_REF_DMC = "DMC-";
     
     DmCode() {
         //generate ramdom unique id based on uuid
@@ -32,7 +33,14 @@ public class DmCode extends ElementXML {
         Element body = doc.body();
         Element div = body.appendElement(HTML_DIV);
         List<String> usedAttributes = Arrays.asList("modelIdentCode", "systemDiffCode", "systemCode", "subSystemCode", "subSubSystemCode", "assyCode", "disassyCode", "disassyCodeVariant", "infoCode", "infoCodeVariant", "itemLocationCode"); 
-        Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN).text(S1000D_DMC);
+        Element span = div.appendElement(HTML_SPAN).appendElement(HTML_SPAN);
+        //if i have DmRef ancestor, add a link to the dmc
+        if (this.getAncestor("DmRef") != null) {
+            span.text(S1000D_REF_DMC);
+        }else{
+            span.text(S1000D_DMC);
+        }
+        
         span.addClass("bold");
        
         div.appendElement(HTML_SPAN).attr("name", "dmc").text(this.getDmc());

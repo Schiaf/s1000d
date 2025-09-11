@@ -90,6 +90,27 @@ public abstract class ElementXML {
         return null;
     }
 
+    protected ElementXML getPreviousSibling() {
+        ElementXML parent = this.getParent();
+        List<ElementXML> children = parent.getChildren();
+        int index = children.indexOf(this);
+        if (index > 0) {
+            return children.get(index - 1);
+        }
+        return null;
+    }
+
+    protected ElementXML getAncestor(String name) {
+        ElementXML parent = this.getParent();
+        while (parent != null) {
+            if (parent.getName().equalsIgnoreCase(name)) {
+                return parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
     protected void appendChildrenToElement(Element tag, List<String> usedAttributes, List<String> usedTags, String... classes) {
         Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
         if (span2.childNodeSize() != 0) {
@@ -118,7 +139,7 @@ public abstract class ElementXML {
         appendChildrenToElement(tag, usedAttributes, defaultUsedTags, classes);
     }
 
-        protected void appendChildrenToTr(Element tag, List<String> usedAttributes, String... classes) {
+        protected void appendTagToElement(Element tag, String addedTag, List<String> usedAttributes, String... classes) {
         Element span2 = this.addMissingAttribute(usedAttributes).addClass("nottreated");
         if (span2.childNodeSize() != 0) {
             tag.insertChildren(0, span2);
@@ -127,12 +148,12 @@ public abstract class ElementXML {
             String childHtml = child.toHtml();
             Document childDoc = Jsoup.parse(childHtml);
             // for td elements
-            for (Element td : childDoc.select(HTML_TD)) {
-                Element elementElement = (Element) td;
+            for (Element addefElement : childDoc.select(addedTag)) {
+                Element elementElement = (Element) addefElement;
                 for (String clazz : classes) {
                     elementElement.addClass(clazz);
                 }
-                tag.appendChild(td);
+                tag.appendChild(addefElement);
             }
         }
     }

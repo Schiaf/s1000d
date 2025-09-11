@@ -52,7 +52,13 @@ public class InternalRef extends ElementXML {
             
                 break;
             case "irtt04":
-                
+                if (elem != null) {
+                    //get the text content of first child of the supplyDescr
+                    ElementXML firstChild = elem.getChildren().get(0);
+                    if (firstChild != null && firstChild instanceof Name) {
+                        content = firstChild.getChildren().get(0).toHtml();
+                    }
+                }
                 break;
             case "irtt05":
                 

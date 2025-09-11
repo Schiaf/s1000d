@@ -149,3 +149,7 @@ td, th {
     text-align: center;
     font-weight: bold;
 }
+
+.predash::before {
+    content: " - ";
+}

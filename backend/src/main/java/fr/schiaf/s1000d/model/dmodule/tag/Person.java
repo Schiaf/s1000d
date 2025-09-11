@@ -39,7 +39,7 @@ public class Person extends ElementXML {
         Element personTableBody = personTable.appendElement(HTML_TBODY);
         Element personTr = personTableBody.appendElement(HTML_TR);
         personTr.appendElement(HTML_TD).text(this.getAttribute("man"));
-        this.appendChildrenToTr(personTr, usedAttributes);
+        this.appendTagToElement(personTr, "td", usedAttributes);
         
         return doc.toString();
     }
